@@ -2,7 +2,6 @@ package com.spinytech.macore.tools;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.text.TextUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,18 +30,18 @@ public class ProcessUtil {
             return processName;
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (!TextUtils.isEmpty(processName)) {
-                return processName;
-            }
         }
         return UNKNOWN_PROCESS_NAME;
     }
 
     public static String getProcessName(Context context, int pid) {
         String processName = getProcessName(pid);
-        if(UNKNOWN_PROCESS_NAME.equals(processName)){
-            ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        if (UNKNOWN_PROCESS_NAME.equals(processName)) {
+            ActivityManager am =
+                    (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            if (am == null) {
+                return UNKNOWN_PROCESS_NAME;
+            }
             List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
             if (runningApps == null) {
                 return UNKNOWN_PROCESS_NAME;
@@ -52,7 +51,7 @@ public class ProcessUtil {
                     return procInfo.processName;
                 }
             }
-        }else{
+        } else {
             return processName;
         }
         return UNKNOWN_PROCESS_NAME;

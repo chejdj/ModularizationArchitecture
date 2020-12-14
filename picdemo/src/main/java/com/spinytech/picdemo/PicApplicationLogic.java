@@ -12,6 +12,6 @@ public class PicApplicationLogic extends BaseApplicationLogic {
     @Override
     public void onCreate() {
         super.onCreate();
-        LocalRouter.getInstance(mApplication).registerProvider("pic",new PicProvider());
+        LocalRouter.getInstance(mApplication).registerProvider("pic", new PicProvider());
     }
 }

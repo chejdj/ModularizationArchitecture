@@ -6,9 +6,10 @@ import com.spinytech.macore.MaProvider;
  * Created by wanglei on 2017/1/4.
  */
 
-public class WebProvider extends MaProvider{
+public class WebProvider extends MaProvider {
+
     @Override
     protected void registerActions() {
-        registerAction("web",new WebAction());
+        registerAction("web", new WebAction());
     }
 }

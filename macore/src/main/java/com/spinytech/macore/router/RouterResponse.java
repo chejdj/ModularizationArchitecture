@@ -1,10 +1,10 @@
 package com.spinytech.macore.router;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by wanglei on 2016/12/27.
@@ -14,8 +14,10 @@ public class RouterResponse {
 
     private static final int TIME_OUT = 30 * 1000;
 
-    private long mTimeOut = 0;
+    private final long mTimeOut;
+
     private boolean mHasGet = false;
+
     boolean mIsAsync = true;
 
     int mCode = -1;
@@ -27,7 +29,7 @@ public class RouterResponse {
     Object mObject;
 
     /**
-     *  This field is MaActionResult.toString()
+     * This field is MaActionResult.toString()
      */
     String mResultString;
 
@@ -51,14 +53,12 @@ public class RouterResponse {
     public String get() throws Exception {
         if (mIsAsync) {
             mResultString = mAsyncResponse.get(mTimeOut, TimeUnit.MILLISECONDS);
-            parseResult();
-        }else{
-            parseResult();
         }
+        parseResult();
         return mResultString;
     }
 
-    private void parseResult(){
+    private void parseResult() {
         if (!mHasGet) {
             try {
                 JSONObject jsonObject = new JSONObject(mResultString);
@@ -99,5 +99,4 @@ public class RouterResponse {
         }
         return mObject;
     }
-
 }

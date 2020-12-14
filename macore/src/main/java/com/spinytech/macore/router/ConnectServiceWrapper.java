@@ -5,9 +5,10 @@ package com.spinytech.macore.router;
  */
 
 public class ConnectServiceWrapper {
-    public Class<? extends LocalRouterConnectService> targetClass = null;
 
-    public ConnectServiceWrapper( Class<? extends LocalRouterConnectService> logicClass) {
+    public Class<? extends LocalRouterConnectService> targetClass;
+
+    public ConnectServiceWrapper(Class<? extends LocalRouterConnectService> logicClass) {
         this.targetClass = logicClass;
     }
 }

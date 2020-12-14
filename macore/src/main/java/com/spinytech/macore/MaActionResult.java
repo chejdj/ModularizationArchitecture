@@ -1,6 +1,8 @@
 package com.spinytech.macore;
 
 
+import android.support.annotation.Nullable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -8,22 +10,36 @@ import org.json.JSONObject;
  * Created by wanglei on 16/6/14.
  */
 public class MaActionResult {
+
     public static final int CODE_SUCCESS = 0x0000;
+
     public static final int CODE_ERROR = 0x0001;
+
     public static final int CODE_NOT_FOUND = 0X0002;
+
     public static final int CODE_INVALID = 0X0003;
+
     public static final int CODE_ROUTER_NOT_REGISTER = 0X0004;
+
     public static final int CODE_CANNOT_BIND_LOCAL = 0X0005;
+
     public static final int CODE_REMOTE_EXCEPTION = 0X0006;
+
     public static final int CODE_CANNOT_BIND_WIDE = 0X0007;
+
     public static final int CODE_TARGET_IS_WIDE = 0X0008;
+
     public static final int CODE_WIDE_STOPPING = 0X0009;
+
     public static final int CODE_NOT_IMPLEMENT = 0X000a;
 
-    private int code;
-    private String msg;
-    private String data;
-    private Object object;
+    private final int code;
+
+    private final String msg;
+
+    private final String data;
+
+    private final Object object;
 
     private MaActionResult(Builder builder) {
         this.code = builder.mCode;
@@ -62,9 +78,15 @@ public class MaActionResult {
     }
 
     public static class Builder {
+
         private int mCode;
+
         private String mMsg;
+
+        @Nullable
         private Object mObject;
+
+        @Nullable
         private String mData;
 
         public Builder() {
@@ -74,7 +96,7 @@ public class MaActionResult {
             mData = null;
         }
 
-        public Builder resultString(String resultString) {
+        public Builder resultJSONString(String resultString) {
             try {
                 JSONObject jsonObject = new JSONObject(resultString);
                 this.mCode = jsonObject.getInt("code");
@@ -110,6 +132,4 @@ public class MaActionResult {
             return new MaActionResult(this);
         }
     }
-
-
 }

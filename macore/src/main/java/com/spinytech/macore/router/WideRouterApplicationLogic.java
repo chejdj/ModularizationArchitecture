@@ -7,6 +7,7 @@ import com.spinytech.macore.multiprocess.BaseApplicationLogic;
  */
 
 public final class WideRouterApplicationLogic extends BaseApplicationLogic {
+
     @Override
     public void onCreate() {
         super.onCreate();

@@ -3,10 +3,15 @@ package com.spinytech.musicdemo;
 import android.content.Context;
 import android.media.MediaPlayer;
 
+import com.spinytech.macore.tools.Logger;
+
 /**
  * Created by wanglei on 2016/12/27.
  */
 public class Music {
+
+    private static final String TAG = "Music";
+
     MediaPlayer mp;
 
     public Music(Context context) {
@@ -14,6 +19,7 @@ public class Music {
     }
 
     public void play() {
+        Logger.i(TAG, "play music");
         try {
             if (mp != null) {
                 mp.stop();
@@ -26,6 +32,7 @@ public class Music {
     }
 
     public void stop() {
+        Logger.i(TAG, "stop music");
         try {
             if (mp != null) {
                 mp.stop();
@@ -33,6 +40,5 @@ public class Music {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

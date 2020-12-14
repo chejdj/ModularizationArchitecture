@@ -8,9 +8,10 @@ import com.spinytech.macore.router.LocalRouter;
  */
 
 public class MainApplicationLogic extends BaseApplicationLogic {
+
     @Override
     public void onCreate() {
         super.onCreate();
-        LocalRouter.getInstance(mApplication).registerProvider("main",new MainProvider());
+        LocalRouter.getInstance(mApplication).registerProvider("main", new MainProvider());
     }
 }

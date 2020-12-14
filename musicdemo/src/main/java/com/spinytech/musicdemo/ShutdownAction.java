@@ -2,20 +2,22 @@ package com.spinytech.musicdemo;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+
+import java.util.HashMap;
 
 import com.spinytech.macore.MaAction;
 import com.spinytech.macore.MaActionResult;
 import com.spinytech.macore.MaApplication;
 import com.spinytech.macore.router.LocalRouter;
-
-import java.util.HashMap;
+import com.spinytech.macore.tools.Logger;
 
 /**
  * Created by wanglei on 2016/12/28.
  */
 
 public class ShutdownAction extends MaAction {
+
+    private static final String TAG = "ShutDownAction";
 
     @Override
     public boolean isAsync(Context context, HashMap<String, String> requestData) {
@@ -30,10 +32,10 @@ public class ShutdownAction extends MaAction {
                 .data("")
                 .object(null)
                 .build();
-        context.getApplicationContext().stopService(new Intent(context,MusicService.class));
-
-        boolean stopslef =LocalRouter.getInstance(MaApplication.getMaApplication()).stopSelf(MusicRouterConnectService.class);
-        Log.e("stopslef",""+stopslef);
+        context.getApplicationContext().stopService(new Intent(context, MusicService.class));
+        boolean stopSelf = LocalRouter.getInstance(MaApplication.getMaApplication())
+                                      .stopSelf(MusicRouterConnectService.class);
+        Logger.i(TAG, "stopSelf: " + stopSelf);
         new Thread(new Runnable() {
             @Override
             public void run() {

@@ -12,6 +12,6 @@ public class WebApplicationLogic extends BaseApplicationLogic {
     @Override
     public void onCreate() {
         super.onCreate();
-        LocalRouter.getInstance(mApplication).registerProvider("web",new WebProvider());
+        LocalRouter.getInstance(mApplication).registerProvider("web", new WebProvider());
     }
 }

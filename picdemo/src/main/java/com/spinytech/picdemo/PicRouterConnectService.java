@@ -7,4 +7,5 @@ import com.spinytech.macore.router.LocalRouterConnectService;
  */
 
 public class PicRouterConnectService extends LocalRouterConnectService {
+    //no op
 }

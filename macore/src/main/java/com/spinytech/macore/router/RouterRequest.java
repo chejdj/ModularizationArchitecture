@@ -1,13 +1,8 @@
 package com.spinytech.macore.router;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
-
-import com.spinytech.macore.tools.Logger;
-import com.spinytech.macore.tools.ProcessUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -17,25 +12,45 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.spinytech.macore.tools.Logger;
+import com.spinytech.macore.tools.ProcessUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by wanglei on 2016/12/27.
  */
 
 public class RouterRequest {
+
     private static final String TAG = "RouterRequest";
+
     private static volatile String DEFAULT_PROCESS = "";
+
     private String from;
+
     private String domain;
+
     private String provider;
+
     private String action;
+
     private HashMap<String, String> data;
+
+    @Nullable
     private Object object;
+
+    // object reused
     AtomicBoolean isIdle = new AtomicBoolean(true);
 
     private static final int length = 64;
-    private static AtomicInteger sIndex = new AtomicInteger(0);
+
+    private static final AtomicInteger sIndex = new AtomicInteger(0);
+
     private static final int RESET_NUM = 1000;
-    private static volatile RouterRequest[] table = new RouterRequest[length];
+
+    private static final RouterRequest[] table = new RouterRequest[length];
 
     static {
         for (int i = 0; i < length; i++) {
@@ -95,7 +110,8 @@ public class RouterRequest {
     }
 
     private static String getProcess(Context context) {
-        if (TextUtils.isEmpty(DEFAULT_PROCESS) || ProcessUtil.UNKNOWN_PROCESS_NAME.equals(DEFAULT_PROCESS)) {
+        if (TextUtils.isEmpty(DEFAULT_PROCESS)
+                || ProcessUtil.UNKNOWN_PROCESS_NAME.equals(DEFAULT_PROCESS)) {
             DEFAULT_PROCESS = ProcessUtil.getProcessName(context, ProcessUtil.getMyProcessId());
         }
         return DEFAULT_PROCESS;
@@ -111,7 +127,6 @@ public class RouterRequest {
             jsonObject.put("domain", domain);
             jsonObject.put("provider", provider);
             jsonObject.put("action", action);
-
             try {
                 JSONObject jsonData = new JSONObject();
                 for (Map.Entry<String, String> entry : data.entrySet()) {
@@ -125,7 +140,6 @@ public class RouterRequest {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return jsonObject.toString();
     }
 
@@ -242,11 +256,8 @@ public class RouterRequest {
                 sIndex.set(0);
             }
         }
-
         int num = index & (length - 1);
-
         RouterRequest target = table[num];
-
         if (target.isIdle.compareAndSet(true, false)) {
             target.from = getProcess(context);
             target.domain = getProcess(context);
@@ -260,16 +271,20 @@ public class RouterRequest {
             } else {
                 return new RouterRequest(context);
             }
-
         }
     }
 
     @Deprecated
     public static class Builder {
+
         private String mFrom;
+
         private String mDomain;
+
         private String mProvider;
+
         private String mAction;
+
         private HashMap<String, String> mData;
 
         public Builder(Context context) {
@@ -380,5 +395,4 @@ public class RouterRequest {
             return new RouterRequest(this);
         }
     }
-
 }

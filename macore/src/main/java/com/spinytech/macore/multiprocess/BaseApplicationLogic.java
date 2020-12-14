@@ -10,7 +10,9 @@ import com.spinytech.macore.MaApplication;
  */
 
 public class BaseApplicationLogic {
+
     protected MaApplication mApplication;
+
     public BaseApplicationLogic() {
     }
 

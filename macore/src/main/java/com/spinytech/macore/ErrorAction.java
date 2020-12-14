@@ -11,16 +11,20 @@ import java.util.HashMap;
 public class ErrorAction extends MaAction {
 
     private static final String DEFAULT_MESSAGE = "Something was really wrong. Ha ha!";
-    private int mCode;
-    private String mMessage;
-    private boolean mAsync;
+
+    private final int mCode;
+
+    private final String mMessage;
+
+    private final boolean mAsync;
+
     public ErrorAction() {
         mCode = MaActionResult.CODE_ERROR;
         mMessage = DEFAULT_MESSAGE;
         mAsync = false;
     }
 
-    public ErrorAction(boolean isAsync,int code, String message) {
+    public ErrorAction(boolean isAsync, int code, String message) {
         this.mCode = code;
         this.mMessage = message;
         this.mAsync = isAsync;
@@ -33,13 +37,10 @@ public class ErrorAction extends MaAction {
 
     @Override
     public MaActionResult invoke(Context context, HashMap<String, String> requestData) {
-        MaActionResult result = new MaActionResult.Builder()
-                .code(mCode)
-                .msg(mMessage)
-                .data(null)
-                .object(null)
-                .build();
-        return result;
+        return new MaActionResult.Builder().code(mCode)
+                                           .msg(mMessage)
+                                           .data(null)
+                                           .object(null)
+                                           .build();
     }
-
 }

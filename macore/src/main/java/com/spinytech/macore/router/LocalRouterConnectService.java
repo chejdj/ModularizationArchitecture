@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.spinytech.macore.ILocalRouterAIDL;
 import com.spinytech.macore.MaActionResult;
 import com.spinytech.macore.MaApplication;
+import com.spinytech.macore.tools.Logger;
 
 /**
  * Created by wanglei on 2016/11/29.
@@ -17,22 +17,19 @@ import com.spinytech.macore.MaApplication;
 
 public class LocalRouterConnectService extends Service {
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
-    }
+    private static final String TAG = "LocalRouter";
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.e("MRCS","onBind");
+        Logger.i(TAG, "onBind");
         return stub;
     }
 
     ILocalRouterAIDL.Stub stub = new ILocalRouterAIDL.Stub() {
 
         @Override
-        public boolean checkResponseAsync(String routerRequest) throws RemoteException {
+        public boolean checkResponseAsync(String routerRequest) {
             return LocalRouter.getInstance(MaApplication.getMaApplication()).
                     answerWiderAsync(new RouterRequest
                             .Builder(getApplicationContext())
@@ -43,12 +40,14 @@ public class LocalRouterConnectService extends Service {
         @Override
         public String route(String routerRequest) {
             try {
+                //TODO 优化:跨进程之间传输涉及到了4次JSON的序列化和反序列化
                 LocalRouter localRouter = LocalRouter.getInstance(MaApplication.getMaApplication());
                 RouterRequest routerRequest1 = new RouterRequest
                         .Builder(getApplicationContext())
                         .json(routerRequest)
                         .build();
-                RouterResponse routerResponse = localRouter.route(LocalRouterConnectService.this,routerRequest1);
+                RouterResponse routerResponse = localRouter
+                        .route(LocalRouterConnectService.this, routerRequest1);
                 return routerResponse.get();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -58,9 +57,7 @@ public class LocalRouterConnectService extends Service {
 
         @Override
         public boolean stopWideRouter() throws RemoteException {
-            LocalRouter
-                    .getInstance(MaApplication.getMaApplication())
-                    .disconnectWideRouter();
+            LocalRouter.getInstance(MaApplication.getMaApplication()).disconnectWideRouter();
             return true;
         }
 

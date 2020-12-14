@@ -6,6 +6,10 @@ import android.content.res.Configuration;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+
 import com.spinytech.macore.multiprocess.BaseApplicationLogic;
 import com.spinytech.macore.multiprocess.PriorityLogicWrapper;
 import com.spinytech.macore.router.LocalRouter;
@@ -15,18 +19,20 @@ import com.spinytech.macore.router.WideRouterConnectService;
 import com.spinytech.macore.tools.Logger;
 import com.spinytech.macore.tools.ProcessUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-
 /**
  * Created by wanglei on 2016/11/25.
  */
 
 public abstract class MaApplication extends Application {
+
     private static final String TAG = "MaApplication";
+
     private static MaApplication sInstance;
+
+    // Current process logic
     private ArrayList<PriorityLogicWrapper> mLogicList;
+
+    // All logic
     private HashMap<String, ArrayList<PriorityLogicWrapper>> mLogicClassMap;
 
     @CallSuper
@@ -34,13 +40,12 @@ public abstract class MaApplication extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
-        Logger.d(TAG,"Application onCreate start: "+System.currentTimeMillis());
+        Logger.i(TAG, "Application onCreate start: " + System.currentTimeMillis());
         init();
         startWideRouter();
         initializeLogic();
-        dispatchLogic();
+        dispatchCurrentProcessLogic();
         instantiateLogic();
-
         // Traverse the application logic.
         if (null != mLogicList && mLogicList.size() > 0) {
             for (PriorityLogicWrapper priorityLogicWrapper : mLogicList) {
@@ -49,7 +54,7 @@ public abstract class MaApplication extends Application {
                 }
             }
         }
-        Logger.d(TAG,"Application onCreate end: "+System.currentTimeMillis());
+        Logger.i(TAG, "Application onCreate end: " + System.currentTimeMillis());
     }
 
     private void init() {
@@ -59,7 +64,8 @@ public abstract class MaApplication extends Application {
 
     protected void startWideRouter() {
         if (needMultipleProcess()) {
-            registerApplicationLogic(WideRouter.PROCESS_NAME, 1000, WideRouterApplicationLogic.class);
+            registerApplicationLogic(WideRouter.PROCESS_NAME, 1000,
+                    WideRouterApplicationLogic.class);
             Intent intent = new Intent(this, WideRouterConnectService.class);
             startService(intent);
         }
@@ -71,49 +77,52 @@ public abstract class MaApplication extends Application {
 
     public abstract boolean needMultipleProcess();
 
-    protected boolean registerApplicationLogic(String processName, int priority, @NonNull Class<? extends BaseApplicationLogic> logicClass) {
+    protected boolean registerApplicationLogic(String processName, int priority,
+            @NonNull Class<? extends BaseApplicationLogic> logicClass) {
         boolean result = false;
         if (null != mLogicClassMap) {
-            ArrayList<PriorityLogicWrapper> tempList = mLogicClassMap.get(processName);
-            if (null == tempList) {
-                tempList = new ArrayList<>();
-                mLogicClassMap.put(processName, tempList);
+            ArrayList<PriorityLogicWrapper> priorityLogicList = mLogicClassMap.get(processName);
+            if (null == priorityLogicList) {
+                priorityLogicList = new ArrayList<>();
+                mLogicClassMap.put(processName, priorityLogicList);
             }
-            if (tempList.size() > 0) {
-                for (PriorityLogicWrapper priorityLogicWrapper : tempList) {
+            if (priorityLogicList.size() > 0) {
+                for (PriorityLogicWrapper priorityLogicWrapper : priorityLogicList) {
                     if (logicClass.getName().equals(priorityLogicWrapper.logicClass.getName())) {
                         throw new RuntimeException(logicClass.getName() + " has registered.");
                     }
                 }
             }
-            PriorityLogicWrapper priorityLogicWrapper = new PriorityLogicWrapper(priority, logicClass);
-            tempList.add(priorityLogicWrapper);
+            PriorityLogicWrapper priorityLogicWrapper = new PriorityLogicWrapper(priority,
+                    logicClass);
+            priorityLogicList.add(priorityLogicWrapper);
+            result = true;
         }
         return result;
     }
 
-    private void dispatchLogic() {
+    private void dispatchCurrentProcessLogic() {
         if (null != mLogicClassMap) {
-            mLogicList = mLogicClassMap.get(ProcessUtil.getProcessName(this, ProcessUtil.getMyProcessId()));
+            mLogicList = mLogicClassMap.get(ProcessUtil.getProcessName(this,
+                    ProcessUtil.getMyProcessId()));
         }
     }
 
     private void instantiateLogic() {
         if (null != mLogicList && mLogicList.size() > 0) {
-            if (null != mLogicList && mLogicList.size() > 0) {
-                Collections.sort(mLogicList);
-                for (PriorityLogicWrapper priorityLogicWrapper : mLogicList) {
-                    if (null != priorityLogicWrapper) {
-                        try {
-                            priorityLogicWrapper.instance = priorityLogicWrapper.logicClass.newInstance();
-                        } catch (InstantiationException e) {
-                            e.printStackTrace();
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        }
-                        if (null != priorityLogicWrapper.instance) {
-                            priorityLogicWrapper.instance.setApplication(this);
-                        }
+            Collections.sort(mLogicList);
+            for (PriorityLogicWrapper priorityLogicWrapper : mLogicList) {
+                if (null != priorityLogicWrapper) {
+                    try {
+                        priorityLogicWrapper.instance = priorityLogicWrapper.logicClass
+                                .newInstance();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    if (null != priorityLogicWrapper.instance) {
+                        priorityLogicWrapper.instance.setApplication(this);
                     }
                 }
             }
@@ -168,7 +177,7 @@ public abstract class MaApplication extends Application {
         }
     }
 
-    public static MaApplication getMaApplication(){
+    public static MaApplication getMaApplication() {
         return sInstance;
     }
 }

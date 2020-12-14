@@ -7,10 +7,11 @@ import com.spinytech.macore.MaProvider;
  */
 
 public class MainProvider extends MaProvider {
+
     @Override
     protected void registerActions() {
-        registerAction("sync",new SyncAction());
-        registerAction("async",new AsyncAction());
-        registerAction("attachment",new AttachObjectAction());
+        registerAction("sync", new SyncAction());
+        registerAction("async", new AsyncAction());
+        registerAction("attachment", new AttachObjectAction());
     }
 }

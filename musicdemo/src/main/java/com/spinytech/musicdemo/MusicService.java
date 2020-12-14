@@ -1,18 +1,19 @@
 package com.spinytech.musicdemo;
-
 /**
  * Created by wanglei on 2016/12/27.
  */
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
+
+import com.spinytech.macore.tools.Logger;
 
 public class MusicService extends Service {
-    public Music music;
 
-    public MusicService() {
-    }
+    private static final String TAG = "MusicService";
+
+    public Music music;
 
     @Override
     public void onCreate() {
@@ -22,11 +23,11 @@ public class MusicService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(intent !=null){
+        if (intent != null) {
             String command = intent.getStringExtra("command");
-            if("play".equals(command)){
+            if ("play".equals(command)) {
                 music.play();
-            }else if("stop".equals(command)){
+            } else if ("stop".equals(command)) {
                 music.stop();
             }
         }
@@ -41,6 +42,6 @@ public class MusicService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e("MusicService","onDestroy");
+        Logger.i(TAG, "onDestroy");
     }
 }

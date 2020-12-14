@@ -13,7 +13,7 @@ import com.spinytech.macore.router.RouterResponse;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +23,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    RouterResponse response = LocalRouter.getInstance(MaApplication.getMaApplication())
-                            .route(MainActivity.this, RouterRequest.obtain(MainActivity.this).provider("main")
-                                    .action("sync")
-                                    .data("1", "Hello")
-                                    .data("2", "World"));
+                    RouterResponse response = LocalRouter
+                            .getInstance(MaApplication.getMaApplication())
+                            .route(MainActivity.this,
+                                    RouterRequest.obtain(MainActivity.this).provider("main")
+                                                 .action("sync")
+                                                 .data("1", "Hello")
+                                                 .data("2", "World"));
                     Toast.makeText(MainActivity.this, response.get(), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -38,11 +40,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    final RouterResponse response = LocalRouter.getInstance(MaApplication.getMaApplication())
-                            .route(MainActivity.this, RouterRequest.obtain(MainActivity.this).provider("main")
-                                    .action("async")
-                                    .data("1", "Hello")
-                                    .data("2", "World"));
+                    final RouterResponse response = LocalRouter
+                            .getInstance(MaApplication.getMaApplication())
+                            .route(MainActivity.this,
+                                    RouterRequest.obtain(MainActivity.this).provider("main")
+                                                 .action("async")
+                                                 .data("1", "Hello")
+                                                 .data("2", "World"));
                     Toast.makeText(MainActivity.this, "please wait", Toast.LENGTH_SHORT).show();
                     new Thread(new Runnable() {
                         @Override
@@ -53,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         try {
-                                            Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MainActivity.this, result,
+                                                    Toast.LENGTH_SHORT).show();
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -70,35 +75,30 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
         findViewById(R.id.main_play_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final long startTime = System.currentTimeMillis();
-                final RouterRequest request = new RouterRequest.Builder(getApplicationContext())
-                        .domain("com.spinytech.maindemo:music")
-                        .provider("music")
-                        .action("play")
-                        .build();
                 try {
-                    final RouterResponse response = LocalRouter.getInstance(MaApplication.getMaApplication())
+                    final RouterResponse response = LocalRouter
+                            .getInstance(MaApplication.getMaApplication())
                             .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
-                                    .domain("com.spinytech.maindemo:music")
-                                    .provider("music")
-                                    .action("play"));
-                    response.isAsync();
+                                                                   .domain("com.spinytech.maindemo:music")
+                                                                   .provider("music")
+                                                                   .action("play"));
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                final String temp = response.getData();
                                 final long time = System.currentTimeMillis() - startTime;
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
                                         try {
-                                            Toast.makeText(MainActivity.this, "async:" + response.isAsync() + " cost:" + time + " response:" + response.get(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MainActivity.this,
+                                                    "async:" + response.isAsync() + " cost:" + time
+                                                            + " response:" + response.get(),
+                                                    Toast.LENGTH_SHORT).show();
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -119,23 +119,25 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final long startTime = System.currentTimeMillis();
                 try {
-                    final RouterResponse response = LocalRouter.getInstance(MaApplication.getMaApplication())
+                    final RouterResponse response = LocalRouter
+                            .getInstance(MaApplication.getMaApplication())
                             .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
-                                    .domain("com.spinytech.maindemo:music")
-                                    .provider("music")
-                                    .action("stop"));
-                    response.isAsync();
+                                                                   .domain("com.spinytech.maindemo:music")
+                                                                   .provider("music")
+                                                                   .action("stop"));
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                final String temp = response.getData();
                                 final long time = System.currentTimeMillis() - startTime;
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
                                         try {
-                                            Toast.makeText(MainActivity.this, "async:" + response.isAsync() + " cost:" + time + " response:" + response.get(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MainActivity.this,
+                                                    "async:" + response.isAsync() + " cost:" + time
+                                                            + " response:" + response.get(),
+                                                    Toast.LENGTH_SHORT).show();
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -151,30 +153,30 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
         findViewById(R.id.main_music_shutdown_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final long startTime = System.currentTimeMillis();
                 try {
-                    final RouterResponse response = LocalRouter.getInstance(MaApplication.getMaApplication())
+                    final RouterResponse response = LocalRouter
+                            .getInstance(MaApplication.getMaApplication())
                             .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
-                                    .domain("com.spinytech.maindemo:music")
-                                    .provider("music")
-                                    .action("shutdown"));
-                    response.isAsync();
+                                                                   .domain("com.spinytech.maindemo:music")
+                                                                   .provider("music")
+                                                                   .action("shutdown"));
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                final String temp = response.getData();
                                 final long time = System.currentTimeMillis() - startTime;
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
                                         try {
-                                            Toast.makeText(MainActivity.this, "async:" + response.isAsync() + " cost:" + time + " response:" + response.get(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MainActivity.this,
+                                                    "async:" + response.isAsync() + " cost:" + time
+                                                            + " response:" + response.get(),
+                                                    Toast.LENGTH_SHORT).show();
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -201,24 +203,26 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final long startTime = System.currentTimeMillis();
                 try {
-                    final RouterResponse response = LocalRouter.getInstance(MaApplication.getMaApplication())
+                    final RouterResponse response = LocalRouter
+                            .getInstance(MaApplication.getMaApplication())
                             .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
-                                    .domain("com.spinytech.maindemo:pic")
-                                    .provider("pic")
-                                    .action("pic")
-                                    .data("is_big", "0"));
-                    response.isAsync();
+                                                                   .domain("com.spinytech.maindemo:pic")
+                                                                   .provider("pic")
+                                                                   .action("pic")
+                                                                   .data("is_big", "0"));
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                final String temp = response.getData();
                                 final long time = System.currentTimeMillis() - startTime;
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
                                         try {
-                                            Toast.makeText(MainActivity.this, "async:" + response.isAsync() + " cost:" + time + " response:" + response.get(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MainActivity.this,
+                                                    "async:" + response.isAsync() + " cost:" + time
+                                                            + " response:" + response.get(),
+                                                    Toast.LENGTH_SHORT).show();
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -234,30 +238,31 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
         findViewById(R.id.main_big_pic_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final long startTime = System.currentTimeMillis();
                 try {
-                    final RouterResponse response = LocalRouter.getInstance(MaApplication.getMaApplication())
+                    final RouterResponse response = LocalRouter
+                            .getInstance(MaApplication.getMaApplication())
                             .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
-                                    .domain("com.spinytech.maindemo:pic")
-                                    .provider("pic")
-                                    .action("pic")
-                                    .data("is_big", "1"));
-                    response.isAsync();
+                                                                   .domain("com.spinytech.maindemo:pic")
+                                                                   .provider("pic")
+                                                                   .action("pic")
+                                                                   .data("is_big", "1"));
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                final String temp = response.getData();
                                 final long time = System.currentTimeMillis() - startTime;
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
                                         try {
-                                            Toast.makeText(MainActivity.this, "async:" + response.isAsync() + " cost:" + time + " response:" + response.get(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MainActivity.this,
+                                                    "async:" + response.isAsync() + " cost:" + time
+                                                            + " response:" + response.get(),
+                                                    Toast.LENGTH_SHORT).show();
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -278,10 +283,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     LocalRouter.getInstance(MaApplication.getMaApplication())
-                            .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
-                                    .provider("web")
-                                    .action("web")
-                            );
+                               .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
+                                                                      .provider("web")
+                                                                      .action("web")
+                               );
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -291,14 +296,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    RouterResponse response = LocalRouter.getInstance(MaApplication.getMaApplication())
+                    RouterResponse response = LocalRouter
+                            .getInstance(MaApplication.getMaApplication())
                             .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
-                                    .provider("main")
-                                    .action("attachment")
-                                    .object(findViewById(R.id.main_attach_btn))
+                                                                   .provider("main")
+                                                                   .action("attachment")
+                                                                   .object(findViewById(
+                                                                           R.id.main_attach_btn))
                             );
-                    if(response.getObject() instanceof Toast){
-                        ((Toast)response.getObject()).show();
+                    if (response.getObject() instanceof Toast) {
+                        ((Toast) response.getObject()).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -306,5 +313,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 }

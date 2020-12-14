@@ -7,8 +7,10 @@ package com.spinytech.macore.multiprocess;
 
 public class PriorityLogicWrapper implements Comparable<PriorityLogicWrapper> {
 
-    public int priority = 0;
-    public Class<? extends BaseApplicationLogic> logicClass = null;
+    public int priority;
+
+    public Class<? extends BaseApplicationLogic> logicClass;
+
     public BaseApplicationLogic instance;
 
     public PriorityLogicWrapper(int priority, Class<? extends BaseApplicationLogic> logicClass) {

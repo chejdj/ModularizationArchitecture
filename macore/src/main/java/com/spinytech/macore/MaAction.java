@@ -9,12 +9,19 @@ import java.util.HashMap;
  */
 
 public abstract class MaAction {
-    public abstract boolean isAsync(Context context, HashMap<String,String> requestData);
-    public abstract MaActionResult invoke(Context context, HashMap<String,String> requestData);
-    public boolean isAsync(Context context, HashMap<String,String> requestData,Object object){
+
+    public abstract boolean isAsync(Context context, HashMap<String, String> requestData);
+
+    public abstract MaActionResult invoke(Context context, HashMap<String, String> requestData);
+
+    public boolean isAsync(Context context, HashMap<String, String> requestData, Object object) {
         return false;
     }
-    public MaActionResult invoke(Context context, HashMap<String,String> requestData,Object object){
-        return new MaActionResult.Builder().code(MaActionResult.CODE_NOT_IMPLEMENT).msg("This method has not yet been implemented.").build();
+
+    public MaActionResult invoke(Context context, HashMap<String, String> requestData,
+            Object object) {
+        return new MaActionResult.Builder().code(MaActionResult.CODE_NOT_IMPLEMENT)
+                                           .msg("This method has not yet been implemented.")
+                                           .build();
     }
 }
