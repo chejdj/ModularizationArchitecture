@@ -3,12 +3,9 @@ package com.spinytech.macore;
 import android.app.Application;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 
 import com.spinytech.macore.multiprocess.BaseApplicationLogic;
 import com.spinytech.macore.multiprocess.PriorityLogicWrapper;
@@ -18,6 +15,10 @@ import com.spinytech.macore.router.WideRouterApplicationLogic;
 import com.spinytech.macore.router.WideRouterConnectService;
 import com.spinytech.macore.tools.Logger;
 import com.spinytech.macore.tools.ProcessUtil;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * Created by wanglei on 2016/11/25.

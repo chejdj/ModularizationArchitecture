@@ -1,17 +1,15 @@
 package com.spinytech.macore.router;
 
+import static android.content.Context.BIND_AUTO_CREATE;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
 
-import java.util.HashMap;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import androidx.annotation.NonNull;
 
 import com.spinytech.macore.ErrorAction;
 import com.spinytech.macore.IWideRouterAIDL;
@@ -22,7 +20,10 @@ import com.spinytech.macore.MaProvider;
 import com.spinytech.macore.tools.Logger;
 import com.spinytech.macore.tools.ProcessUtil;
 
-import static android.content.Context.BIND_AUTO_CREATE;
+import java.util.HashMap;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * The Local Router
@@ -45,7 +46,7 @@ public class LocalRouter {
 
     private static ExecutorService threadPool = null;
 
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mWideRouterAIDL = IWideRouterAIDL.Stub.asInterface(service);
@@ -148,7 +149,8 @@ public class LocalRouter {
             }
         } else if (!mApplication.needMultipleProcess()) {
             throw new Exception(
-                    "Please make sure the returned value of needMultipleProcess in MaApplication is true, so that you can invoke other process action.");
+                    "Please make sure the returned value of needMultipleProcess in MaApplication "
+                            + "is true, so that you can invoke other process action.");
         }
         // IPC request
         else {
@@ -158,7 +160,8 @@ public class LocalRouter {
             if (checkWideRouterConnection()) {
                 Logger.i(TAG, "Process:" + mProcessName + "\nWide async check start: "
                         + System.currentTimeMillis());
-                //If you don't need wide async check, use "routerResponse.mIsAsync = false;" replace the next line to improve performance.
+                //If you don't need wide async check, use "routerResponse.mIsAsync = false;"
+                // replace the next line to improve performance.
                 routerResponse.mIsAsync =
                         mWideRouterAIDL.checkResponseAsync(domain, routerRequestString);
                 Logger.i(TAG, "Process:" + mProcessName + "\nWide async check end: "

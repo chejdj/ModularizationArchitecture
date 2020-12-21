@@ -1,7 +1,8 @@
 package com.spinytech.macore;
 
 
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import org.json.JSONException;
 import org.json.JSONObject;

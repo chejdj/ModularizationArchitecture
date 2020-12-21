@@ -3,7 +3,8 @@ package com.spinytech.macore.router;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.spinytech.macore.IWideRouterAIDL;
 import com.spinytech.macore.MaActionResult;
@@ -24,7 +25,8 @@ public final class WideRouterConnectService extends Service {
         super.onCreate();
         if (!(getApplication() instanceof MaApplication)) {
             throw new RuntimeException(
-                    "Please check your AndroidManifest.xml and make sure the application is instance of MaApplication.");
+                    "Please check your AndroidManifest.xml and make sure the application is "
+                            + "instance of MaApplication.");
         }
     }
 
@@ -48,16 +50,20 @@ public final class WideRouterConnectService extends Service {
         }
         if (domain != null && domain.length() > 0) {
             boolean hasRegistered = WideRouter.getInstance(MaApplication.getMaApplication())
-                                              .checkLocalRouterHasRegistered(domain);
+                    .checkLocalRouterHasRegistered(domain);
             if (!hasRegistered) {
                 Logger.e(TAG, "Bind error: The local router of process " + domain
                         + " is not bidirectional." +
-                        "\nPlease create a Service extend LocalRouterConnectService then register it in AndroidManifest.xml and the initializeAllProcessRouter method of MaApplication."
+                        "\nPlease create a Service extend LocalRouterConnectService then register"
+                        + " it in AndroidManifest.xml and the initializeAllProcessRouter method "
+                        + "of MaApplication."
                         +
                         "\nFor example:" +
-                        "\n<service android:name=\"XXXConnectService\" android:process=\"your process name\"/>"
+                        "\n<service android:name=\"XXXConnectService\" android:process=\"your "
+                        + "process name\"/>"
                         +
-                        "\nWideRouter.registerLocalRouter(\"your process name\",XXXConnectService.class);");
+                        "\nWideRouter.registerLocalRouter(\"your process name\",XXXConnectService"
+                        + ".class);");
                 return null;
             }
             WideRouter.getInstance(MaApplication.getMaApplication()).connectLocalRouter(domain);
@@ -73,14 +79,14 @@ public final class WideRouterConnectService extends Service {
         @Override
         public boolean checkResponseAsync(String domain, String routerRequest) {
             return WideRouter.getInstance(MaApplication.getMaApplication())
-                             .answerLocalAsync(domain, routerRequest);
+                    .answerLocalAsync(domain, routerRequest);
         }
 
         @Override
         public String route(String domain, String routerRequest) {
             try {
                 return WideRouter.getInstance(MaApplication.getMaApplication())
-                                 .route(domain, routerRequest).mResultString;
+                        .route(domain, routerRequest).mResultString;
             } catch (Exception e) {
                 e.printStackTrace();
                 return new MaActionResult.Builder()
@@ -94,7 +100,7 @@ public final class WideRouterConnectService extends Service {
         @Override
         public boolean stopRouter(String domain) {
             return WideRouter.getInstance(MaApplication.getMaApplication())
-                             .disconnectLocalRouter(domain);
+                    .disconnectLocalRouter(domain);
         }
     };
 }

@@ -1,18 +1,17 @@
 package com.spinytech.macore.router;
 
+import static android.content.Context.BIND_AUTO_CREATE;
+
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
-import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import androidx.annotation.NonNull;
+import androidx.annotation.WorkerThread;
 
 import com.spinytech.macore.ILocalRouterAIDL;
 import com.spinytech.macore.MaActionResult;
@@ -20,7 +19,9 @@ import com.spinytech.macore.MaApplication;
 import com.spinytech.macore.tools.Logger;
 import com.spinytech.macore.tools.ProcessUtil;
 
-import static android.content.Context.BIND_AUTO_CREATE;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by wanglei on 2016/11/29.

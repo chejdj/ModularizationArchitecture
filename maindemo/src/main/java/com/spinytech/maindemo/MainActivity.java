@@ -2,9 +2,10 @@ package com.spinytech.maindemo;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.spinytech.macore.MaApplication;
 import com.spinytech.macore.router.LocalRouter;
@@ -27,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
                             .getInstance(MaApplication.getMaApplication())
                             .route(MainActivity.this,
                                     RouterRequest.obtain(MainActivity.this).provider("main")
-                                                 .action("sync")
-                                                 .data("1", "Hello")
-                                                 .data("2", "World"));
+                                            .action("sync")
+                                            .data("1", "Hello")
+                                            .data("2", "World"));
                     Toast.makeText(MainActivity.this, response.get(), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -44,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
                             .getInstance(MaApplication.getMaApplication())
                             .route(MainActivity.this,
                                     RouterRequest.obtain(MainActivity.this).provider("main")
-                                                 .action("async")
-                                                 .data("1", "Hello")
-                                                 .data("2", "World"));
+                                            .action("async")
+                                            .data("1", "Hello")
+                                            .data("2", "World"));
                     Toast.makeText(MainActivity.this, "please wait", Toast.LENGTH_SHORT).show();
                     new Thread(new Runnable() {
                         @Override
@@ -83,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
                     final RouterResponse response = LocalRouter
                             .getInstance(MaApplication.getMaApplication())
                             .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
-                                                                   .domain("com.spinytech.maindemo:music")
-                                                                   .provider("music")
-                                                                   .action("play"));
+                                    .domain("com.spinytech.maindemo:music")
+                                    .provider("music")
+                                    .action("play"));
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -122,9 +123,9 @@ public class MainActivity extends AppCompatActivity {
                     final RouterResponse response = LocalRouter
                             .getInstance(MaApplication.getMaApplication())
                             .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
-                                                                   .domain("com.spinytech.maindemo:music")
-                                                                   .provider("music")
-                                                                   .action("stop"));
+                                    .domain("com.spinytech.maindemo:music")
+                                    .provider("music")
+                                    .action("stop"));
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -161,9 +162,9 @@ public class MainActivity extends AppCompatActivity {
                     final RouterResponse response = LocalRouter
                             .getInstance(MaApplication.getMaApplication())
                             .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
-                                                                   .domain("com.spinytech.maindemo:music")
-                                                                   .provider("music")
-                                                                   .action("shutdown"));
+                                    .domain("com.spinytech.maindemo:music")
+                                    .provider("music")
+                                    .action("shutdown"));
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -206,10 +207,10 @@ public class MainActivity extends AppCompatActivity {
                     final RouterResponse response = LocalRouter
                             .getInstance(MaApplication.getMaApplication())
                             .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
-                                                                   .domain("com.spinytech.maindemo:pic")
-                                                                   .provider("pic")
-                                                                   .action("pic")
-                                                                   .data("is_big", "0"));
+                                    .domain("com.spinytech.maindemo:pic")
+                                    .provider("pic")
+                                    .action("pic")
+                                    .data("is_big", "0"));
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -246,10 +247,10 @@ public class MainActivity extends AppCompatActivity {
                     final RouterResponse response = LocalRouter
                             .getInstance(MaApplication.getMaApplication())
                             .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
-                                                                   .domain("com.spinytech.maindemo:pic")
-                                                                   .provider("pic")
-                                                                   .action("pic")
-                                                                   .data("is_big", "1"));
+                                    .domain("com.spinytech.maindemo:pic")
+                                    .provider("pic")
+                                    .action("pic")
+                                    .data("is_big", "1"));
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -283,10 +284,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     LocalRouter.getInstance(MaApplication.getMaApplication())
-                               .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
-                                                                      .provider("web")
-                                                                      .action("web")
-                               );
+                            .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
+                                    .provider("web")
+                                    .action("web")
+                            );
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -299,14 +300,78 @@ public class MainActivity extends AppCompatActivity {
                     RouterResponse response = LocalRouter
                             .getInstance(MaApplication.getMaApplication())
                             .route(MainActivity.this, RouterRequest.obtain(MainActivity.this)
-                                                                   .provider("main")
-                                                                   .action("attachment")
-                                                                   .object(findViewById(
-                                                                           R.id.main_attach_btn))
+                                    .provider("main")
+                                    .action("attachment")
+                                    .object(findViewById(
+                                            R.id.main_attach_btn))
                             );
                     if (response.getObject() instanceof Toast) {
                         ((Toast) response.getObject()).show();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        findViewById(R.id.main_get_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    final RouterResponse response = LocalRouter.getInstance(
+                            MaApplication.getMaApplication())
+                            .route(MainActivity.this,
+                                    RouterRequest.obtain(MainActivity.this).provider(
+                                            "network").action("get"));
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                final String resultData = response.getData();
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this, resultData,
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        findViewById(R.id.main_post_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    final RouterResponse response = LocalRouter.getInstance(
+                            MaApplication.getMaApplication())
+                            .route(MainActivity.this,
+                                    RouterRequest.obtain(MainActivity.this).provider(
+                                            "network").action("query"));
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                final String resultData = response.getData();
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this, resultData,
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

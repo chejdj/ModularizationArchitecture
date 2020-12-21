@@ -2,11 +2,12 @@ package com.spinytech.webdemo;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.spinytech.macore.MaApplication;
 import com.spinytech.macore.router.LocalRouter;
@@ -43,7 +44,7 @@ public class WebActivity extends AppCompatActivity {
             String command = url.substring(index + "your_protocol://".length());
             try {
                 LocalRouter.getInstance(MaApplication.getMaApplication())
-                           .route(this, new RouterRequest.Builder(this).url(command).build());
+                        .route(this, new RouterRequest.Builder(this).url(command).build());
             } catch (Exception e) {
                 e.printStackTrace();
             }

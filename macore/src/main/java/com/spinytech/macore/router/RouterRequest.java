@@ -1,8 +1,15 @@
 package com.spinytech.macore.router;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
+
+import com.spinytech.macore.tools.Logger;
+import com.spinytech.macore.tools.ProcessUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -11,12 +18,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import com.spinytech.macore.tools.Logger;
-import com.spinytech.macore.tools.ProcessUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by wanglei on 2016/12/27.
@@ -274,7 +275,6 @@ public class RouterRequest {
         }
     }
 
-    @Deprecated
     public static class Builder {
 
         private String mFrom;

@@ -4,6 +4,7 @@ import com.spinytech.macore.MaApplication;
 import com.spinytech.macore.router.WideRouter;
 import com.spinytech.musicdemo.MusicApplicationLogic;
 import com.spinytech.musicdemo.MusicRouterConnectService;
+import com.spinytech.networkdemo.NetWorkApplicationLogic;
 import com.spinytech.picdemo.PicApplicationLogic;
 import com.spinytech.picdemo.PicRouterConnectService;
 import com.spinytech.webdemo.WebApplicationLogic;
@@ -28,6 +29,7 @@ public class MyApplication extends MaApplication {
         registerApplicationLogic("com.spinytech.maindemo", 998, WebApplicationLogic.class);
         registerApplicationLogic("com.spinytech.maindemo:music", 999, MusicApplicationLogic.class);
         registerApplicationLogic("com.spinytech.maindemo:pic", 999, PicApplicationLogic.class);
+        registerApplicationLogic("com.spinytech.maindemo", 999, NetWorkApplicationLogic.class);
     }
 
     @Override
